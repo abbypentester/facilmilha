@@ -1,0 +1,139 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String    // Para autenticação real
+  name          String?
+  pixKey        String?   // Chave PIX para saque (Vendedores)
+  avatarUrl     String?   // Foto de perfil
+  createdAt     DateTime  @default(now())
+
+  requests      FlightRequest[] 
+  offers        Offer[]         
+  wallet        Wallet?         // Carteira digital do usuário
+
+  ratingsReceived Rating[] @relation("SellerRatings")
+  ratingsGiven    Rating[] @relation("BuyerRatings")
+}
+
+model Wallet {
+  id          String   @id @default(uuid())
+  balance     Float    @default(0.0) // Saldo disponível para saque
+  frozen      Float    @default(0.0) // Saldo bloqueado (em escrow)
+  pending     Float    @default(0.0) // Saldo retido por segurança (5 dias)
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  transactions FinancialTransaction[]
+}
+
+model FinancialTransaction {
+  id          String   @id @default(uuid())
+  type        String   // DEPOSIT, WITHDRAWAL, ESCROW_LOCK, ESCROW_RELEASE, SALE_HOLD
+  amount      Float
+  status      String   @default("COMPLETED") // PENDING, COMPLETED, FAILED
+  availableAt DateTime @default(now())
+  walletId    String
+  wallet      Wallet   @relation(fields: [walletId], references: [id])
+  createdAt   DateTime @default(now())
+  description String?
+}
+
+model FlightRequest {
+  id          String   @id @default(uuid())
+  origin      String
+  destination String
+  departDate  DateTime
+  returnDate  DateTime?
+  tripType    String    @default("ONE_WAY") // ONE_WAY, ROUND_TRIP
+  passengersCount Int   @default(1)
+  flexibility Boolean  @default(false)
+  observation String?
+  status      String   @default("OPEN") 
+  // Status Flow: OPEN -> OFFER_ACCEPTED -> PAID -> ISSUED -> COMPLETED
+  
+  buyerId     String
+  buyer       User     @relation(fields: [buyerId], references: [id])
+  
+  offers      Offer[]
+  passengers  Passenger[]
+  createdAt   DateTime @default(now())
+}
+
+model Passenger {
+  id              String        @id @default(uuid())
+  firstName       String
+  lastName        String
+  birthDate       DateTime
+  gender          String        // MALE, FEMALE
+  nationality     String        @default("Brasileira")
+  documentType    String        @default("CPF") // CPF, PASSPORT
+  documentNumber  String        // Número do documento (CPF ou Passaporte)
+  passportExpiry  DateTime?     // Validade do passaporte
+  email           String?       // Contato do passageiro (opcional, pode ser do viajante)
+  phone           String?       // Contato do passageiro
+  
+  // Campo legado para compatibilidade temporária (pode ser removido depois)
+  cpf             String?
+
+  flightRequestId String
+  flightRequest   FlightRequest @relation(fields: [flightRequestId], references: [id])
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  value     Int      // 1-5
+  comment   String?
+  createdAt DateTime @default(now())
+  
+  sellerId  String
+  seller    User     @relation("SellerRatings", fields: [sellerId], references: [id])
+  
+  buyerId   String
+  buyer     User     @relation("BuyerRatings", fields: [buyerId], references: [id])
+  
+  offerId   String   @unique
+  offer     Offer    @relation(fields: [offerId], references: [id])
+}
+
+model Offer {
+  id              String   @id @default(uuid())
+  amount          Float    // Valor Base
+  feeBuyer        Float    // +15%
+  feeSeller       Float    // -15%
+  totalPrice      Float    // Comprador paga
+  netAmount       Float    // Vendedor recebe
+  
+  emissionDeadline String? // Prazo de emissão (ex: "Até 24h")
+  observation      String? // Observações do milheiro
+  
+  status          String   @default("PENDING") 
+  // Status Flow: PENDING -> ACCEPTED -> PAID_BY_BUYER -> TICKET_ISSUED -> COMPLETED
+  
+  proofUrl        String?  // URL/Path do comprovante de emissão
+  pnr             String?  // Código Localizador (ex: ABC1234)
+  airline         String?  // Companhia Aérea (ex: Latam, Azul, TAP)
+  
+  pixCode         String?  // PIX Copia e Cola
+  pixImage        String?  // Base64 Image
+  paymentId       String?  // Transaction ID from Gateway
+
+  flightRequestId String
+  flightRequest   FlightRequest @relation(fields: [flightRequestId], references: [id])
+  
+  sellerId        String
+  seller          User     @relation(fields: [sellerId], references: [id])
+  
+  rating          Rating?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+}
