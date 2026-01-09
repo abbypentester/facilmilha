@@ -119,7 +119,7 @@ export async function getUserWallet() {
   }
 }
 
-export async function requestWithdrawal(amount: number) {
+export async function requestWithdrawal(amount: number, pixKey: string, pixKeyType: string) {
     const session = await auth()
     if (!session?.user?.email) throw new Error('Não autenticado')
 
@@ -142,7 +142,7 @@ export async function requestWithdrawal(amount: number) {
                 amount: amount,
                 status: 'COMPLETED', // Em prod seria PENDING até processar
                 walletId: user.wallet.id,
-                description: `Saque para chave PIX ${user.pixKey}`
+                description: `Saque para chave PIX (${pixKeyType}): ${pixKey}`
             }
         })
     ])
