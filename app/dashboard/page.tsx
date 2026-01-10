@@ -18,38 +18,38 @@ export default async function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50/50">
-      <div className="max-w-7xl mx-auto p-6 space-y-8">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div className="max-w-7xl mx-auto p-4 md:p-6 space-y-6 md:space-y-8">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 md:mb-8">
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
               Olá, Viajante
             </h1>
-            <p className="mt-2 text-lg text-gray-600">
-              Gerencie suas viagens e emitações em um só lugar.
+            <p className="mt-1 md:mt-2 text-base md:text-lg text-gray-600">
+              Gerencie suas viagens e emissões em um só lugar.
             </p>
           </div>
         </header>
       
-      <Tabs defaultValue="travel" className="w-full space-y-8">
+      <Tabs defaultValue="travel" className="w-full space-y-6 md:space-y-8">
         <div className="flex justify-center md:justify-start">
           <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-gray-100/80 rounded-xl">
             <TabsTrigger 
               value="travel" 
-              className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm transition-all duration-200 font-medium"
+              className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm transition-all duration-200 font-medium text-xs md:text-sm"
             >
-              Viajante (Comprar)
+              Viajante <span className="hidden xs:inline ml-1">(Comprar)</span>
             </TabsTrigger>
             <TabsTrigger 
               value="sell"
-              className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-sm transition-all duration-200 font-medium"
+              className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-sm transition-all duration-200 font-medium text-xs md:text-sm"
             >
-              Milheiro (Vender)
+              Milheiro <span className="hidden xs:inline ml-1">(Vender)</span>
             </TabsTrigger>
           </TabsList>
         </div>
 
         <TabsContent value="travel" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="grid gap-8 lg:grid-cols-[450px_1fr]">
+          <div className="grid gap-4 md:gap-8 lg:grid-cols-[450px_1fr]">
             <div className="relative">
               <div className="lg:sticky lg:top-8">
                 <RequestForm />
