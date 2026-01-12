@@ -30,9 +30,10 @@ export function Navbar({ user }: { user: any }) {
           <Image 
             src="/logo-facilmilha.png" 
             alt="FacilMilha Logo" 
-            width={180} 
-            height={50} 
-            className="h-10 w-auto object-contain"
+            width={1000} 
+            height={1000} 
+            className="h-12 w-auto object-contain md:h-14"
+            priority
           />
         </Link>
         
