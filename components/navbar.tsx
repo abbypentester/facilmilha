@@ -25,14 +25,14 @@ export function Navbar({ user }: { user: any }) {
 
   return (
     <nav className="border-b bg-white shadow-sm">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-2">
           <Image 
             src="/logo-facilmilha.png" 
             alt="FacilMilha Logo" 
             width={1000} 
             height={1000} 
-            className="h-12 w-auto object-contain md:h-14"
+            className="h-32 w-auto object-contain md:h-48"
             priority
           />
         </Link>
