@@ -20,7 +20,8 @@ import {
     XCircle,
     AlertTriangle,
     Loader2,
-    MoreHorizontal
+    MoreHorizontal,
+    ArrowRight
 } from 'lucide-react'
 import { Dialog, DialogContent, DialogTrigger, DialogHeader, DialogTitle, DialogDescription, DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { PassengerForm } from '@/components/passenger-form'
@@ -144,6 +145,110 @@ function CancelRequestButton({ requestId }: { requestId: string }) {
   )
 }
 
+function RequestActions({ req }: { req: any }) {
+  const router = useRouter()
+  const acceptedOffer = req.offers?.find((o: any) => o.status === 'ACCEPTED')
+  const issuedOffer = req.offers?.find((o: any) => o.status === 'TICKET_ISSUED')
+
+  if (req.status === 'OPEN') {
+      return (
+          <>
+              {req.offers?.length > 0 && (
+                  <ViewOffersDialog request={req} />
+              )}
+              <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                      <DropdownMenuItem onSelect={(e: any) => e.preventDefault()}>
+                          <CancelRequestButton requestId={req.id} />
+                      </DropdownMenuItem>
+                  </DropdownMenuContent>
+              </DropdownMenu>
+          </>
+      )
+  }
+
+  if (req.status === 'OFFER_ACCEPTED' && acceptedOffer) {
+      return (
+          <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white h-8 text-xs w-full md:w-auto" onClick={() => router.push(`/checkout/${acceptedOffer.id}`)}>
+              Pagar Agora
+          </Button>
+      )
+  }
+
+  if (req.status === 'PAID') {
+      return (
+          <Dialog>
+              <DialogTrigger asChild>
+                  <Button size="sm" variant="outline" className="h-8 text-xs border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 w-full md:w-auto">
+                      {(!req.passengers || req.passengers.length === 0) ? 'Preencher Dados' : 'Ver Dados'}
+                  </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                      <DialogTitle>Dados dos Passageiros</DialogTitle>
+                      <DialogDescription>
+                          Preencha as informações necessárias para a emissão das passagens.
+                      </DialogDescription>
+                  </DialogHeader>
+                  <PassengerForm flightRequestId={req.id} onSuccess={() => window.location.reload()} />
+              </DialogContent>
+          </Dialog>
+      )
+  }
+
+  if (req.status === 'ISSUED' && issuedOffer) {
+      return (
+          <Dialog>
+              <DialogTrigger asChild>
+                  <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white h-8 text-xs w-full md:w-auto">
+                      Ver Bilhete
+                  </Button>
+              </DialogTrigger>
+              <DialogContent>
+                  <DialogHeader>
+                      <DialogTitle>Passagem Emitida!</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                      <div className="bg-gray-50 p-4 rounded-lg border">
+                          <p className="text-sm font-medium text-gray-500">Localizador (PNR)</p>
+                          <div className="flex items-center gap-2 mt-1">
+                              <code className="text-xl font-bold">{issuedOffer.pnr}</code>
+                              <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => navigator.clipboard.writeText(issuedOffer.pnr)}>
+                                  <Copy className="h-3 w-3" />
+                              </Button>
+                          </div>
+                      </div>
+                      
+                      {issuedOffer.proofUrl && (
+                          <Button asChild variant="outline" className="w-full">
+                              <a href={issuedOffer.proofUrl} target="_blank" rel="noopener noreferrer">
+                                  <Download className="mr-2 h-4 w-4" /> Baixar Comprovante
+                              </a>
+                          </Button>
+                      )}
+
+                      <div className="bg-blue-50 p-4 rounded-lg text-sm text-blue-800">
+                          <p className="font-bold mb-1">Confirme no site da cia aérea</p>
+                          <p>Antes de liberar o pagamento, verifique se a reserva está correta no site da companhia.</p>
+                      </div>
+                      
+                      <ConfirmReceiptButton offerId={issuedOffer.id} />
+                  </div>
+              </DialogContent>
+          </Dialog>
+      )
+  }
+
+  return <span className="text-gray-400 hidden md:inline">-</span>
+}
+
 export function MyRequestsList({ requests }: { requests: any[] }) {
   const router = useRouter()
   const [filter, setFilter] = useState<RequestStatus>('ALL')
@@ -234,8 +339,8 @@ export function MyRequestsList({ requests }: { requests: any[] }) {
         </div>
       </div>
 
-      {/* Table List */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+      {/* Desktop Table List */}
+      <div className="hidden md:block bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         <Table>
             <TableHeader className="bg-gray-50/50">
                 <TableRow>
@@ -258,9 +363,7 @@ export function MyRequestsList({ requests }: { requests: any[] }) {
                     filteredRequests.map((req) => {
                         const status = statusMap[req.status as keyof typeof statusMap] || statusMap.OPEN
                         const StatusIcon = status.icon
-                        const acceptedOffer = req.offers?.find((o: any) => o.status === 'ACCEPTED')
-                        const issuedOffer = req.offers?.find((o: any) => o.status === 'TICKET_ISSUED')
-
+                        
                         return (
                             <TableRow key={req.id} className="group hover:bg-gray-50/50 transition-colors">
                                 <TableCell className="font-mono text-xs font-medium text-gray-500">
@@ -294,90 +397,7 @@ export function MyRequestsList({ requests }: { requests: any[] }) {
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <div className="flex justify-end items-center gap-2">
-                                        {/* Action Logic */}
-                                        {req.status === 'OPEN' ? (
-                                            <>
-                                                {req.offers?.length > 0 && (
-                                                    <ViewOffersDialog request={req} />
-                                                )}
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" className="h-8 w-8 p-0">
-                                                            <span className="sr-only">Open menu</span>
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                                                        <DropdownMenuItem onSelect={(e: any) => e.preventDefault()}>
-                                                            <CancelRequestButton requestId={req.id} />
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </>
-                                        ) : req.status === 'OFFER_ACCEPTED' && acceptedOffer ? (
-                                            <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white h-8 text-xs" onClick={() => router.push(`/checkout/${acceptedOffer.id}`)}>
-                                                Pagar Agora
-                                            </Button>
-                                        ) : req.status === 'PAID' ? (
-                                            <Dialog>
-                                                <DialogTrigger asChild>
-                                                    <Button size="sm" variant="outline" className="h-8 text-xs border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100">
-                                                        {(!req.passengers || req.passengers.length === 0) ? 'Preencher Dados' : 'Ver Dados'}
-                                                    </Button>
-                                                </DialogTrigger>
-                                                <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                                                    <DialogHeader>
-                                                        <DialogTitle>Dados dos Passageiros</DialogTitle>
-                                                        <DialogDescription>
-                                                            Preencha as informações necessárias para a emissão das passagens.
-                                                        </DialogDescription>
-                                                    </DialogHeader>
-                                                    <PassengerForm flightRequestId={req.id} onSuccess={() => window.location.reload()} />
-                                                </DialogContent>
-                                            </Dialog>
-                                        ) : req.status === 'ISSUED' && issuedOffer ? (
-                                            <Dialog>
-                                                <DialogTrigger asChild>
-                                                    <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white h-8 text-xs">
-                                                        Ver Bilhete
-                                                    </Button>
-                                                </DialogTrigger>
-                                                <DialogContent>
-                                                    <DialogHeader>
-                                                        <DialogTitle>Passagem Emitida!</DialogTitle>
-                                                    </DialogHeader>
-                                                    <div className="space-y-4 py-4">
-                                                        <div className="bg-gray-50 p-4 rounded-lg border">
-                                                            <p className="text-sm font-medium text-gray-500">Localizador (PNR)</p>
-                                                            <div className="flex items-center gap-2 mt-1">
-                                                                <code className="text-xl font-bold">{issuedOffer.pnr}</code>
-                                                                <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => navigator.clipboard.writeText(issuedOffer.pnr)}>
-                                                                    <Copy className="h-3 w-3" />
-                                                                </Button>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        {issuedOffer.proofUrl && (
-                                                            <Button asChild variant="outline" className="w-full">
-                                                                <a href={issuedOffer.proofUrl} target="_blank" rel="noopener noreferrer">
-                                                                    <Download className="mr-2 h-4 w-4" /> Baixar Comprovante
-                                                                </a>
-                                                            </Button>
-                                                        )}
-
-                                                        <div className="bg-blue-50 p-4 rounded-lg text-sm text-blue-800">
-                                                            <p className="font-bold mb-1">Confirme no site da cia aérea</p>
-                                                            <p>Antes de liberar o pagamento, verifique se a reserva está correta no site da companhia.</p>
-                                                        </div>
-                                                        
-                                                        <ConfirmReceiptButton offerId={issuedOffer.id} />
-                                                    </div>
-                                                </DialogContent>
-                                            </Dialog>
-                                        ) : (
-                                            <span className="text-gray-400">-</span>
-                                        )}
+                                        <RequestActions req={req} />
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -386,6 +406,53 @@ export function MyRequestsList({ requests }: { requests: any[] }) {
                 )}
             </TableBody>
         </Table>
+      </div>
+
+      {/* Mobile Card List */}
+      <div className="md:hidden space-y-4">
+        {filteredRequests.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
+                <p className="text-gray-500">Nenhuma solicitação encontrada.</p>
+            </div>
+        ) : (
+            filteredRequests.map((req) => {
+                const status = statusMap[req.status as keyof typeof statusMap] || statusMap.OPEN
+                const StatusIcon = status.icon
+
+                return (
+                    <div key={req.id} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-3">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <span className="font-mono text-xs font-medium text-gray-500">#{req.id.slice(0, 6)}</span>
+                                <div className="font-medium text-gray-900 flex items-center gap-2 mt-1">
+                                    {req.origin} <ArrowRight className="w-3 h-3 text-gray-400" /> {req.destination}
+                                </div>
+                            </div>
+                            <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${status.color}`}>
+                                <StatusIcon className="w-3.5 h-3.5" />
+                                {status.label}
+                            </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <div className="flex items-center gap-1.5">
+                                <Calendar className="w-4 h-4 text-gray-400" />
+                                {format(new Date(req.departDate), "dd MMM", { locale: ptBR })}
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <Badge variant="secondary" className="font-normal text-xs">
+                                    {req.offers?.length || 0} ofertas
+                                </Badge>
+                            </div>
+                        </div>
+
+                        <div className="pt-3 border-t border-gray-50 flex justify-end gap-2">
+                            <RequestActions req={req} />
+                        </div>
+                    </div>
+                )
+            })
+        )}
       </div>
     </div>
   )
