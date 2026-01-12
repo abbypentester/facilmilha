@@ -63,11 +63,11 @@ export function AirportCombobox({ value = "", onChange, placeholder = "Selecione
             className={cn("w-full justify-between font-normal h-12 text-base md:text-sm", className)}
           >
             {selectedAirport ? (
-              <div className="flex items-center text-left">
-                <Plane className="mr-2 h-4 w-4 text-blue-600" />
-                <div className="flex flex-col">
-                  <span className="font-bold leading-none">{selectedAirport.city} ({selectedAirport.code})</span>
-                  <span className="text-xs text-muted-foreground mt-0.5">{selectedAirport.name}</span>
+              <div className="flex items-center text-left overflow-hidden">
+                <Plane className="mr-2 h-4 w-4 text-blue-600 shrink-0" />
+                <div className="flex flex-col overflow-hidden">
+                  <span className="font-bold leading-none truncate">{selectedAirport.city} ({selectedAirport.code})</span>
+                  <span className="text-xs text-muted-foreground mt-0.5 truncate">{selectedAirport.name}</span>
                 </div>
               </div>
             ) : (

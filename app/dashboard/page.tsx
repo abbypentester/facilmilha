@@ -47,7 +47,7 @@ export default async function Dashboard() {
 
         <TabsContent value="travel" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="grid gap-3 md:gap-8 lg:grid-cols-[450px_1fr]">
-            <div className="relative">
+            <div className="relative w-full max-w-[100vw] overflow-hidden md:overflow-visible">
               <div className="lg:sticky lg:top-8">
                 <RequestForm />
               </div>
