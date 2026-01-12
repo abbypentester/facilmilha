@@ -59,7 +59,7 @@ export function AirportCombobox({ value = "", onChange, placeholder = "Selecione
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-full justify-between font-normal h-12 text-base md:text-sm"
+            className={cn("w-full justify-between font-normal h-12 text-base md:text-sm", className)}
           >
             {selectedAirport ? (
               <div className="flex items-center text-left">

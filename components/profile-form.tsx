@@ -55,10 +55,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
         <CardDescription>Atualize sua foto e dados pessoais.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={handleSubmit} className="space-y-6">
+        <form action={handleSubmit} className="space-y-4 md:space-y-6">
           <div className="flex flex-col items-center gap-4">
             <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
-              <Avatar className="h-32 w-32 border-4 border-white shadow-xl">
+              <Avatar className="h-24 w-24 md:h-32 md:w-32 border-4 border-white shadow-xl">
                 <AvatarImage src={preview || ""} className="object-cover" />
                 <AvatarFallback className="text-4xl bg-slate-100">
                   {user.name?.charAt(0) || user.email.charAt(0).toUpperCase()}
@@ -79,7 +79,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
             <p className="text-sm text-muted-foreground">Clique na foto para alterar</p>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-3 md:gap-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Nome Completo</Label>
               <Input id="name" name="name" defaultValue={user.name || ""} placeholder="Seu nome" />

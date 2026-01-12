@@ -11,8 +11,8 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto py-10 space-y-8">
-      <div className="flex flex-col md:flex-row gap-6">
+    <div className="container mx-auto py-4 md:py-10 space-y-4 md:space-y-8">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
         {/* Coluna Esquerda: Stats */}
         <div className="w-full md:w-1/3 space-y-6">
           <Card>
