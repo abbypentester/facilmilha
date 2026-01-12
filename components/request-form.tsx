@@ -215,8 +215,5 @@ export function RequestForm() {
         </form>
       </CardContent>
     </Card>
-        </form>
-      </CardContent>
-    </Card>
   )
 }
