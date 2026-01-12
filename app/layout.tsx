@@ -30,6 +30,7 @@ export default async function RootLayout({
         <main className="container mx-auto py-4 px-3 md:py-8 md:px-4 relative z-10 max-w-full">
             {children}
         </main>
+        <Footer />
         <Toaster />
       </body>
     </html>
