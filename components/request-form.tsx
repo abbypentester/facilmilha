@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label'
 import { AirportCombobox } from '@/components/airport-combobox'
 import { useState } from 'react'
-import { Plane, MapPin, Calendar as CalendarIcon, Users, ArrowRightLeft, ArrowRight } from 'lucide-react'
+import { Plane, MapPin, Calendar as CalendarIcon, Users, ArrowRightLeft, ArrowRight, Search } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Calendar } from '@/components/ui/calendar'
