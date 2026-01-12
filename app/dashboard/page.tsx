@@ -18,19 +18,16 @@ export default async function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50/50">
-      <div className="max-w-7xl mx-auto p-4 md:p-6 space-y-6 md:space-y-8">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 md:mb-8">
+      <div className="max-w-7xl mx-auto p-2 md:p-6 space-y-2 md:space-y-8">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-1 md:gap-4 mb-2 md:mb-8">
           <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            <h1 className="text-lg md:text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
               Olá, Viajante
             </h1>
-            <p className="mt-1 md:mt-2 text-base md:text-lg text-gray-600">
-              Gerencie suas viagens e emissões em um só lugar.
-            </p>
           </div>
         </header>
       
-      <Tabs defaultValue="travel" className="w-full space-y-6 md:space-y-8">
+      <Tabs defaultValue="travel" className="w-full space-y-2 md:space-y-8">
         <div className="flex justify-center md:justify-start">
           <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-gray-100/80 rounded-xl">
             <TabsTrigger 
