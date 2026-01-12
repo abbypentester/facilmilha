@@ -22,10 +22,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { LiveOpportunities } from "@/components/live-opportunities";
 
 export function LandingPageContent() {
   return (
     <div className="flex flex-col min-h-screen">
+      <LiveOpportunities />
       
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">
