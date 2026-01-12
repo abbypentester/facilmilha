@@ -190,7 +190,7 @@ function RequestActions({ req }: { req: any }) {
                       {(!req.passengers || req.passengers.length === 0) ? 'Preencher Dados' : 'Ver Dados'}
                   </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
                       <DialogTitle>Dados dos Passageiros</DialogTitle>
                       <DialogDescription>
@@ -317,8 +317,8 @@ export function MyRequestsList({ requests }: { requests: any[] }) {
       {pendingAlert}
 
       {/* Header & Filters */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-        <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar">
+      <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-between bg-white p-3 md:p-4 rounded-xl border border-gray-100 shadow-sm max-w-full overflow-hidden">
+        <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar mask-linear-fade">
             <FilterButton active={filter === 'ALL'} onClick={() => setFilter('ALL')} label="Todas" count={counts.ALL} />
             <FilterButton active={filter === 'OPEN'} onClick={() => setFilter('OPEN')} label="Abertas" count={counts.OPEN} />
             <FilterButton active={filter === 'OFFER_ACCEPTED'} onClick={() => setFilter('OFFER_ACCEPTED')} label="Pagar" count={counts.OFFER_ACCEPTED} urgent={counts.OFFER_ACCEPTED > 0} />
@@ -328,11 +328,11 @@ export function MyRequestsList({ requests }: { requests: any[] }) {
             <FilterButton active={filter === 'CANCELED'} onClick={() => setFilter('CANCELED')} label="Canceladas" count={counts.CANCELED} />
         </div>
 
-        <div className="relative w-full md:w-64">
+        <div className="relative w-full md:w-64 shrink-0">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input 
-                placeholder="Buscar pedido, origem..." 
-                className="pl-9 h-9 bg-gray-50 border-gray-200"
+                placeholder="Buscar pedido..." 
+                className="pl-9 h-9 bg-gray-50 border-gray-200 w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -420,21 +420,24 @@ export function MyRequestsList({ requests }: { requests: any[] }) {
                 const StatusIcon = status.icon
 
                 return (
-                    <div key={req.id} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-3">
-                        <div className="flex justify-between items-start">
-                            <div>
+                    <div key={req.id} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-3 max-w-full overflow-hidden">
+                        <div className="flex flex-col gap-2">
+                            <div className="flex justify-between items-start w-full">
                                 <span className="font-mono text-xs font-medium text-gray-500">#{req.id.slice(0, 6)}</span>
-                                <div className="font-medium text-gray-900 flex items-center gap-2 mt-1">
-                                    {req.origin} <ArrowRight className="w-3 h-3 text-gray-400" /> {req.destination}
+                                <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${status.color} shrink-0`}>
+                                    <StatusIcon className="w-3.5 h-3.5" />
+                                    {status.label}
                                 </div>
                             </div>
-                            <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${status.color}`}>
-                                <StatusIcon className="w-3.5 h-3.5" />
-                                {status.label}
+                            
+                            <div className="font-medium text-gray-900 flex items-center gap-2 overflow-hidden w-full">
+                                <span className="truncate">{req.origin}</span> 
+                                <ArrowRight className="w-3 h-3 text-gray-400 shrink-0" /> 
+                                <span className="truncate">{req.destination}</span>
                             </div>
                         </div>
                         
-                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                        <div className="flex items-center gap-4 text-sm text-gray-600 border-t border-gray-50 pt-2">
                             <div className="flex items-center gap-1.5">
                                 <Calendar className="w-4 h-4 text-gray-400" />
                                 {format(new Date(req.departDate), "dd MMM", { locale: ptBR })}
@@ -446,7 +449,7 @@ export function MyRequestsList({ requests }: { requests: any[] }) {
                             </div>
                         </div>
 
-                        <div className="pt-3 border-t border-gray-50 flex justify-end gap-2">
+                        <div className="pt-2 flex justify-end gap-2">
                             <RequestActions req={req} />
                         </div>
                     </div>

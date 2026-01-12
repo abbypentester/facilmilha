@@ -55,23 +55,23 @@ export function PendingPaymentAlert({ offerId, updatedAt, origin, destination, p
         // Even if expired, we might show it but with a different message
         // For now, let's keep it visible but red
         return (
-            <Card className="mb-6 border-red-200 bg-red-50 shadow-sm overflow-hidden animate-in fade-in slide-in-from-top-4">
-                <div className="p-4 flex items-center justify-between flex-wrap gap-4">
-                    <div className="flex items-center gap-3">
-                        <div className="bg-red-100 p-2 rounded-full">
-                            <AlertCircle className="w-6 h-6 text-red-600" />
+            <Card className="w-full mb-4 md:mb-6 border-red-200 bg-red-50 shadow-sm overflow-hidden animate-in fade-in slide-in-from-top-4">
+                <div className="p-3 md:p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-4">
+                    <div className="flex items-start gap-3 w-full md:w-auto">
+                        <div className="bg-red-100 p-2 rounded-full shrink-0">
+                            <AlertCircle className="w-5 h-5 md:w-6 md:h-6 text-red-600" />
                         </div>
-                        <div>
-                            <h3 className="font-bold text-red-900">Tempo de reserva esgotado</h3>
-                            <p className="text-sm text-red-700">
+                        <div className="flex-1 min-w-0">
+                            <h3 className="font-bold text-red-900 text-sm md:text-base truncate">Tempo esgotado</h3>
+                            <p className="text-xs md:text-sm text-red-700 leading-tight md:leading-normal line-clamp-2">
                                 A oferta para {origin} ➔ {destination} pode ter expirado.
                             </p>
                         </div>
                     </div>
-                    <Link href={`/checkout/${offerId}`}>
-                        <Button variant="destructive" className="whitespace-nowrap">
-                            Tentar Pagar Mesmo Assim
-                            <ArrowRight className="w-4 h-4 ml-2" />
+                    <Link href={`/checkout/${offerId}`} className="w-full md:w-auto">
+                        <Button variant="destructive" className="w-full md:w-auto whitespace-nowrap h-auto py-2 px-4 text-xs md:text-sm">
+                            Tentar Pagar
+                            <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 ml-2 shrink-0" />
                         </Button>
                     </Link>
                 </div>
@@ -80,43 +80,36 @@ export function PendingPaymentAlert({ offerId, updatedAt, origin, destination, p
     }
 
     return (
-        <Card className="mb-6 border-amber-200 bg-amber-50 shadow-md overflow-hidden relative animate-in fade-in slide-in-from-top-4">
+        <Card className="w-full mb-4 md:mb-6 border-amber-200 bg-amber-50 shadow-md overflow-hidden relative animate-in fade-in slide-in-from-top-4">
              {/* Progress Bar Background */}
             <div 
                 className="absolute bottom-0 left-0 h-1 bg-amber-400 transition-all duration-1000 ease-linear"
                 style={{ width: `${progress}%` }}
             />
 
-            <div className="p-4 flex items-center justify-between flex-wrap gap-4">
-                <div className="flex items-center gap-4">
-                    <div className="bg-amber-100 p-3 rounded-full animate-pulse">
-                        <Clock className="w-6 h-6 text-amber-600" />
+            <div className="p-3 md:p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-4">
+                <div className="flex items-start gap-3 w-full md:w-auto">
+                    <div className="bg-amber-100 p-2 md:p-3 rounded-full animate-pulse shrink-0">
+                        <Clock className="w-5 h-5 md:w-6 md:h-6 text-amber-600" />
                     </div>
-                    <div>
-                        <h3 className="font-bold text-amber-900 text-lg flex items-center gap-2">
-                            Pagamento Pendente
-                            <span className="text-amber-600 font-mono text-xl bg-amber-100 px-2 rounded">
+                    <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-amber-900 text-sm md:text-lg flex flex-wrap items-center gap-2">
+                            <span className="whitespace-nowrap">Pagamento Pendente</span>
+                            <span className="text-amber-600 font-mono text-xs md:text-base bg-amber-100 px-1.5 py-0.5 rounded whitespace-nowrap">
                                 {timeLeft}
                             </span>
                         </h3>
-                        <p className="text-sm text-amber-800">
-                            Finalize a reserva para <strong>{origin} ➔ {destination}</strong> antes que expire.
+                        <p className="text-xs md:text-sm text-amber-800 leading-tight mt-1 line-clamp-2">
+                            Garanta sua passagem para <span className="font-semibold">{destination}</span> por <span className="font-bold">R$ {price.toFixed(2)}</span>.
                         </p>
                     </div>
                 </div>
-
-                <div className="flex items-center gap-4">
-                     <div className="text-right hidden sm:block">
-                        <p className="text-xs text-amber-700 uppercase font-semibold">Total a pagar</p>
-                        <p className="text-xl font-bold text-emerald-700">R$ {price.toFixed(2)}</p>
-                    </div>
-                    <Link href={`/checkout/${offerId}`}>
-                        <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
-                            Pagar Agora
-                            <ArrowRight className="w-5 h-5 ml-2" />
-                        </Button>
-                    </Link>
-                </div>
+                <Link href={`/checkout/${offerId}`} className="w-full md:w-auto">
+                    <Button className="w-full md:w-auto bg-amber-600 hover:bg-amber-700 text-white whitespace-nowrap h-auto py-2.5 px-4 text-xs md:text-sm shadow-sm">
+                        Pagar Agora
+                        <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 ml-2 shrink-0" />
+                    </Button>
+                </Link>
             </div>
         </Card>
     )

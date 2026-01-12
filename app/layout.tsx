@@ -23,11 +23,11 @@ export default async function RootLayout({
   return (
     <html lang="pt-BR">
       <body 
-        className={`${inter.className} antialiased min-h-screen bg-gradient-to-br from-blue-50 via-gray-50 to-indigo-50`}
+        className={`${inter.className} antialiased min-h-screen bg-gradient-to-br from-blue-50 via-gray-50 to-indigo-50 overflow-x-hidden`}
         suppressHydrationWarning={true}
       >
         <Navbar user={session?.user} />
-        <main className="container mx-auto py-8 px-4 relative z-10">
+        <main className="container mx-auto py-4 px-3 md:py-8 md:px-4 relative z-10 max-w-full">
             {children}
         </main>
         <Toaster />

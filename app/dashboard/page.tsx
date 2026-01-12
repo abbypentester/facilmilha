@@ -45,16 +45,16 @@ export default async function Dashboard() {
           </TabsList>
         </div>
 
-        <TabsContent value="travel" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <TabsContent value="travel" className="space-y-4 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="grid gap-3 md:gap-8 lg:grid-cols-[450px_1fr]">
-            <div className="relative w-full max-w-[100vw] overflow-hidden md:overflow-visible">
+            <div className="relative w-full overflow-hidden rounded-3xl md:overflow-visible">
               <div className="lg:sticky lg:top-8">
                 <RequestForm />
               </div>
             </div>
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-800">Minhas Solicitações</h2>
+            <div className="space-y-6 w-full min-w-0">
+              <div className="flex items-center justify-between px-1">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800">Minhas Solicitações</h2>
               </div>
               <MyRequestsList requests={myRequests} />
             </div>

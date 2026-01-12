@@ -54,7 +54,7 @@ export function ViewOffersDialog({ request, trigger }: ViewOffersDialogProps) {
       <DialogTrigger asChild>
         {trigger || <Button size="sm">Ver Ofertas</Button>}
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Ofertas Recebidas</DialogTitle>
           <DialogDescription>
