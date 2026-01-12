@@ -12,8 +12,16 @@ import {
   ArrowRight, 
   CheckCircle2,
   ThumbsUp,
-  UserCheck
+  UserCheck,
+  HelpCircle,
+  AlertTriangle
 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export function LandingPageContent() {
   return (
@@ -31,15 +39,15 @@ export function LandingPageContent() {
             A revolução das milhas chegou
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100 leading-tight">
             Viaje pagando menos. <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
               Lucre com suas milhas.
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-            O marketplace P2P que conecta quem quer viajar barato com quem quer vender milhas com segurança total e sem burocracia.
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+            O marketplace P2P que conecta viajantes e milheiros com <strong>pagamento protegido (Escrow)</strong>, <strong>perfis verificados</strong> e total transparência.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
@@ -55,6 +63,60 @@ export function LandingPageContent() {
               </Button>
             </Link>
           </div>
+
+          {/* Trust Bullets */}
+          <div className="pt-8 flex flex-wrap justify-center gap-4 md:gap-8 text-sm md:text-base font-medium text-slate-600 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-green-600" />
+              Pagamento em Custódia (Escrow)
+            </div>
+            <div className="flex items-center gap-2">
+              <UserCheck className="w-5 h-5 text-blue-600" />
+              Perfis Verificados
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-purple-600" />
+              Sem Taxas Ocultas
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Business Summary (Leitura Rápida) */}
+      <section className="py-16 bg-slate-50 border-y border-slate-100">
+        <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center space-y-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Entenda o Modelo FacilMilha</h2>
+                <div className="grid md:grid-cols-3 gap-6 text-left">
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                            <Plane className="w-5 h-5 text-blue-600" />
+                        </div>
+                        <h3 className="font-semibold text-lg mb-2">Para Viajantes</h3>
+                        <p className="text-slate-600 text-sm">
+                            Compram passagens muito mais baratas, emitidas com as milhas de outras pessoas.
+                        </p>
+                    </div>
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                            <Coins className="w-5 h-5 text-green-600" />
+                        </div>
+                        <h3 className="font-semibold text-lg mb-2">Para Milheiros</h3>
+                        <p className="text-slate-600 text-sm">
+                            Monetizam milhas paradas vendendo passagens para quem precisa viajar.
+                        </p>
+                    </div>
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                            <ShieldCheck className="w-5 h-5 text-purple-600" />
+                        </div>
+                        <h3 className="font-semibold text-lg mb-2">Segurança Total</h3>
+                        <p className="text-slate-600 text-sm">
+                            Verificação de perfis e fluxo via PIX com proteção de pagamento.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
       </section>
 
@@ -62,7 +124,7 @@ export function LandingPageContent() {
       <section id="como-funciona" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Como o FacilMilha funciona?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Como funciona na prática?</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Simples, transparente e seguro para os dois lados. Escolha seu perfil e veja o passo a passo.
             </p>
@@ -217,6 +279,62 @@ export function LandingPageContent() {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Dúvidas Frequentes</h2>
+            <p className="text-slate-600">
+              Tudo o que você precisa saber para negociar com segurança.
+            </p>
+          </div>
+
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Isso é permitido?</AccordionTrigger>
+              <AccordionContent>
+                Sim. A comercialização de passagens aéreas emitidas com milhas por terceiros não é ilegal no Brasil. O FacilMilha atua como intermediário para garantir que o acordo entre as partes seja cumprido com segurança.
+              </AccordionContent>
+            </AccordionItem>
+            
+            <AccordionItem value="item-2">
+              <AccordionTrigger>E se o milheiro não emitir a passagem?</AccordionTrigger>
+              <AccordionContent>
+                Seu dinheiro está protegido. O pagamento fica retido em nossa conta de custódia (Escrow) e só é repassado ao vendedor após você confirmar que recebeu o localizador e validou a passagem no site da companhia aérea. Se ele não emitir, você recebe 100% do valor de volta.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Quanto tempo leva a emissão?</AccordionTrigger>
+              <AccordionContent>
+                O prazo é definido na oferta do milheiro (geralmente entre 2h e 24h). Você só deve aceitar ofertas com prazos que atendam sua necessidade.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-4">
+              <AccordionTrigger>Quais dados preciso enviar?</AccordionTrigger>
+              <AccordionContent>
+                Apenas após aceitar uma oferta e realizar o pagamento, você preencherá um formulário seguro com os dados exigidos pela companhia aérea (Nome completo, CPF/Passaporte, Data de Nascimento, etc.). Esses dados são enviados apenas para o milheiro responsável pela emissão.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-5">
+              <AccordionTrigger>Como funciona o pagamento?</AccordionTrigger>
+              <AccordionContent>
+                O pagamento é feito via PIX para garantir agilidade na emissão. O valor fica guardado conosco até a conclusão do processo. O FacilMilha cobra uma pequena taxa de serviço já inclusa no valor final mostrado na oferta.
+              </AccordionContent>
+            </AccordionItem>
+
+             <AccordionItem value="item-6">
+              <AccordionTrigger>E se eu precisar cancelar?</AccordionTrigger>
+              <AccordionContent>
+                As regras de cancelamento e alteração seguem as políticas da companhia aérea para a tarifa emitida. O FacilMilha intermediará o contato, mas eventuais multas da companhia aérea serão repassadas.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="py-20 bg-gradient-to-br from-blue-600 to-indigo-700 text-white text-center">
         <div className="container mx-auto px-4 space-y-8">
@@ -226,9 +344,9 @@ export function LandingPageContent() {
           <p className="text-xl text-blue-100 max-w-2xl mx-auto">
             Junte-se a milhares de brasileiros que já estão revolucionando a forma de emitir passagens aéreas.
           </p>
-          <div className="pt-4">
+          <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/register">
-              <Button size="lg" className="h-16 px-10 text-xl rounded-full bg-white text-blue-600 hover:bg-blue-50 shadow-2xl transition-all hover:scale-105 font-bold">
+              <Button size="lg" className="h-16 px-10 text-xl rounded-full bg-white text-blue-600 hover:bg-blue-50 shadow-2xl transition-all hover:scale-105 font-bold w-full sm:w-auto">
                 Criar Conta Gratuita
               </Button>
             </Link>
