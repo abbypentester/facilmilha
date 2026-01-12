@@ -16,9 +16,10 @@ interface AirportComboboxProps {
   onChange: (value: string) => void
   placeholder?: string
   name?: string
+  className?: string
 }
 
-export function AirportCombobox({ value = "", onChange, placeholder = "Selecione...", name }: AirportComboboxProps) {
+export function AirportCombobox({ value = "", onChange, placeholder = "Selecione...", name, className }: AirportComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [search, setSearch] = React.useState("")
 
