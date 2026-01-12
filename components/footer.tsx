@@ -30,7 +30,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-blue-600 transition-colors block py-1">
+                <Link href="/como-funciona" className="hover:text-blue-600 transition-colors block py-1">
                     Como Funciona
                 </Link>
               </li>
